@@ -1,13 +1,14 @@
-﻿using System;
+using System;
 using System.Windows;
 using System.Windows.Navigation;
 using System.Diagnostics;
 using System.Threading;
 using System.Windows.Automation;
+using System.Windows.Forms;
 
 namespace DeveloperLicenseAcquirer
 {
-    public partial class App : Application
+    public partial class App : System.Windows.Application
     {
         private String tailoredDeployPath = null;
         private String username = null;
@@ -77,13 +78,20 @@ namespace DeveloperLicenseAcquirer
                                                             .FindAll(TreeScope.Children, System.Windows.Automation.Condition.TrueCondition)[0]
                                                             .FindAll(TreeScope.Children, System.Windows.Automation.Condition.TrueCondition);
 
-                    var usernameTextBox = credentialsPane[2].GetCurrentPattern(AutomationPattern.LookupById(ValuePattern.Pattern.Id)) as ValuePattern;
-                    usernameTextBox.SetValue(username);
+                    SendKeys.SendWait("{TAB}");
+                    SendKeys.SendWait("{TAB}");
+                    SendKeys.SendWait(username);
+                    SendKeys.SendWait("{TAB}");
+                    SendKeys.SendWait(password);
 
-                    var passwordTextBox = credentialsPane[4].GetCurrentPattern(AutomationPattern.LookupById(ValuePattern.Pattern.Id)) as ValuePattern;
-                    passwordTextBox.SetValue(password);
 
-                    var loginButton = credentialsPane[5].GetCurrentPattern(AutomationPattern.LookupById(InvokePattern.Pattern.Id)) as InvokePattern;
+                    //var usernameTextBox = credentialsPane[4].GetCurrentPattern(AutomationPattern.LookupById(ValuePattern.Pattern.Id)) as ValuePattern;
+                    //usernameTextBox.SetValue(username);
+
+                    //var passwordTextBox = credentialsPane[5].GetCurrentPattern(AutomationPattern.LookupById(ValuePattern.Pattern.Id)) as ValuePattern;
+                    //passwordTextBox.SetValue(password);
+
+                    var loginButton = credentialsPane[6].GetCurrentPattern(AutomationPattern.LookupById(InvokePattern.Pattern.Id)) as InvokePattern;
                     loginButton.Invoke();
 
                     Thread.Sleep(10000);
